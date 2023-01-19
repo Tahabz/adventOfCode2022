@@ -41,19 +41,6 @@ const defeats = {
 
 let totalScore = 0
 
-const getRoundOutcome = (myShape, opShape) => {
-  if (myShape === opShape) return DRAW
-  if (defeats[myShape] === opShape) return WON
-  return LOST
-}
-
-const getMyScore = (myShape, opShape) => {
-  const myScore = playsScores[myShape]
-  if (getRoundOutcome(myShape, opShape) === WON) return myScore + roundScore[WON]
-  if (getRoundOutcome(myShape, opShape) === LOST) return myScore + roundScore[LOST]
-  return myScore + roundScore[DRAW]
-}
-
 const calculateScoreRoundStream = new Writable({
   write (chunk, enc, cb) {
     const rounds = chunk.toString().split('\n')
@@ -73,3 +60,16 @@ pipeline(
   calculateScoreRoundStream,
   (err) => err ? console.error(err) : console.log(totalScore)
 )
+
+const getMyScore = (myShape, opShape) => {
+  const myScore = playsScores[myShape]
+  if (getRoundOutcome(myShape, opShape) === WON) return myScore + roundScore[WON]
+  if (getRoundOutcome(myShape, opShape) === LOST) return myScore + roundScore[LOST]
+  return myScore + roundScore[DRAW]
+}
+
+const getRoundOutcome = (myShape, opShape) => {
+  if (myShape === opShape) return DRAW
+  if (defeats[myShape] === opShape) return WON
+  return LOST
+}
