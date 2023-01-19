@@ -33,16 +33,18 @@ const roundScore = {
   WON: 6
 }
 
+const defeats = {
+  ROCK: SCISSORS,
+  PAPER: ROCK,
+  SCISSORS: PAPER
+}
+
 let totalScore = 0
 
 const getRoundOutcome = (myShape, opShape) => {
-  if (myShape === SCISSORS && opShape === PAPER) return WON
-  if (myShape === ROCK && opShape === SCISSORS) return WON
-  if (myShape === PAPER && opShape === ROCK) return WON
-  if (myShape === SCISSORS && opShape === ROCK) return LOST
-  if (myShape === ROCK && opShape === PAPER) return LOST
-  if (myShape === PAPER && opShape === SCISSORS) return LOST
-  return DRAW
+  if (myShape === opShape) return DRAW
+  if (defeats[myShape] === opShape) return WON
+  return LOST
 }
 
 const getMyScore = (myShape, opShape) => {
