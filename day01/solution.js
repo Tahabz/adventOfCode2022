@@ -1,7 +1,9 @@
 const { Transform, pipeline, Writable } = require('node:stream')
 const fs = require('fs')
 
-let greatestSum = 0
+let top1 = 0
+let top2 = 0
+let top3 = 0
 
 const blankLineSplitter = new Transform({
   objectMode: true,
@@ -18,7 +20,16 @@ const sumLines = new Writable({
   objectMode: true,
   write (chunk, enc, cb) {
     const sum = chunk.reduce((a, c) => a + Number(c), 0)
-    greatestSum = sum > greatestSum ? sum : greatestSum
+    if (sum > top1) {
+      top3 = top2
+      top2 = top1
+      top1 = sum
+    } else if (sum > top2) {
+      top3 = top2
+      top2 = sum
+    } else if (sum > top3) {
+      top3 = sum
+    }
     cb()
   }
 })
@@ -29,6 +40,9 @@ pipeline(
   sumLines,
   (err) => {
     if (err) console.error(err)
-    else console.log(greatestSum)
+    else {
+      console.log(`Top 1: ${top1}`)
+      console.log(`Total of Top 3: ${top1 + top2 + top3}`)
+    }
   }
 )
