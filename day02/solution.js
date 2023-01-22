@@ -63,10 +63,10 @@ pipeline(
 
 const getMyScore = (myShape, opShape) => {
   const myScore = playsScores[myShape]
-  return myScore + getRoundOutcome(myShape, opShape)
+  return myScore + getRoundScore(myShape, opShape)
 }
 
-const getRoundOutcome = (myShape, opShape) => {
+const getRoundScore = (myShape, opShape) => {
   if (myShape === opShape) return roundScore[DRAW]
   if (defeats[myShape] === opShape) return roundScore[WON]
   return roundScore[LOST]
